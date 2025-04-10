@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concert List</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: rgb(106, 210, 255);
+            overflow: hidden;
+            border-radius: 5px;
+        }
+        .navbar a {
+            float: right;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .navbar a:hover {
+            background-color: #ffffffb0;
+            color: #2c3e50;
+            
+        }
+    </style>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: rgb(106, 210, 255);
+            margin-bottom: 30px;
+        }
+    </style>
+
+    <style>
+        .concert-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 20px;
+        }
+        .concert {
+            width: 30%;
+            margin: 10px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        .concert img{
+            width: 100%;
+            height: auto;
+        }
+        .concert-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .detail-button {
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        .detail-button:hover {
+            background: linear-gradient(to right, #2980b9, #3498db);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <a href="LoginPage.html">Log in</a>
+        <a href="Help.html">Help</a>
+        <a href="Tips.html">Tips</a>
+        <a href="it-project.html">Home</a>
+        <a href="concert-list.html">Concert List</a>
+        <a href="Shopping_Car.html">Shopping Car</a>
+      </div>
+
+    <h1><i class="fas fa-music"></i>Concert List<i class="fas fa-music"></i></h1>
+
+    <div class="concert-list" id="concert-list"></div>
+
+    <script>
+        const concerts = [
+            { poster: 'https://static.timable.com/image_440454bd-1e26-473e-a272-034d489bb426-1920x2544.jpg', name: '《JJ 林俊傑 JJ20 Final Lap 世界巡迴演唱會》香港站', detailLink: 'concert_JJ.html' },
+            { poster: 'https://res.klook.com/image/upload/v1741572810/wnn8e3pw7jjgzrm88wcd.jpg', name: '五月天 [ #5525 回到那一天 ] 25週年巡迴演唱會香港站 · 展新啟航版', detailLink: 'concert_may.html' },
+            { poster: 'https://res.klook.com/image/upload/v1741835068/zzyecvdl14u2owdaelta.jpg', name: 'BABYMONSTER演唱會2025香港站', detailLink: 'concert_Babymonster.html' },
+            { poster: 'https://static.timable.com/image_e6746af3-951f-4f6a-88fc-881670011507-1080x1525.jpg', name: '周杰倫《嘉年華世界巡迴演唱會2025 – 香港站》', detailLink: 'concert_jay.html' },
+            { poster: 'https://res.klook.com/image/upload/v1736145114/zahgkwmwrxsj5or0mgxa.jpg', name: 'BOYNEXTDOOR演唱會2025香港站', detailLink: 'concert_BoyNextDoor.html' },
+            { poster: 'https://res.klook.com/image/upload/v1740717104/qtafmkse1e7dd3w9d5sh.jpg', name: 'JISOO粉絲見面會2025香港站', detailLink: 'concert_Jisoo.html' }
+        ];
+        const concertList = document.getElementById('concert-list');
+
+        concerts.forEach(concert => {
+            const concertDiv = document.createElement('div');
+            concertDiv.className = 'concert';
+
+            const concertImage = document.createElement('img');
+            concertImage.src = concert.poster;
+            concertImage.alt = concert.name;
+
+            const nameDiv = document.createElement('div');
+            nameDiv.className = 'concert-name';
+            nameDiv.textContent = concert.name;
+
+            const button = document.createElement('button');
+            button.className = 'detail-button';
+            button.textContent = 'Detail';
+            button.onclick = () => location.href = concert.detailLink;
+
+            concertDiv.appendChild(concertImage);
+            concertDiv.appendChild(nameDiv);
+            concertDiv.appendChild(button);
+
+            concertList.appendChild(concertDiv);
+        });
+    </script>
+</body>
+</html>

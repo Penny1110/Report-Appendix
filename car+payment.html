@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concert Ticket System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f8ff;
+        }
+        h1 {
+            text-align: center;
+            color: rgb(106, 210, 255);
+            margin-bottom: 30px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .car-summary {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            text-align: right;
+        }
+        .car-summary h2 {
+            margin: 0;
+        }
+        .navbar {
+            background-color: rgb(106, 210, 255);
+            overflow: hidden;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .navbar a {
+            float: right;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .navbar a:hover {
+            background-color: #ffffffb0;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="LoginPage.html">Log in</a>
+        <a href="Help.html">Help</a>
+        <a href="Tips.html">Tips</a>
+        <a href="it-project.html">Home</a>
+        <a href="concert-list.html">Concert List</a>
+        <a href="Shopping_Car.html">Shopping Car</a>
+    </div>
+
+    <div class="container">
+        <h1>Concert Ticket System</h1>
+
+        <!-- Ticket Purchase Form -->
+        <form id="ticketForm">
+            <div class="input-group">
+                <label for="priceTypes">Price types</label>
+                <select id="priceTypes" name="priceTypes" required>
+                    <option value="">-- Please choose --</option>
+                    <option value="1688">$1688</option>
+                    <option value="1388">$1388</option>
+                    <option value="1088">$1088</option>
+                    <option value="688">$688</option>
+                    <option value="488">$488</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="numberOfTickets">Number of tickets</label>
+                <select id="numberOfTickets" name="numberOfTickets" required>
+                    <option value="">-- Please choose --</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+            <button type="submit">Add to Cart</button>
+        </form>
+
+        <!-- Shopping Cart Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Concert</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="cartItems">
+                <!-- Cart items will be dynamically added here -->
+            </tbody>
+        </table>
+
+        <!-- Cart Summary -->
+        <div class="car-summary">
+            <h2>Cart Summary</h2>
+            <p>Total Amount: $<span id="total-amount">0.00</span></p>
+            <button id="checkoutButton">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Function to update the cart display
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cartItems');
+            cartItems.innerHTML = ''; // Clear the current cart display
+
+            let totalAmount = 0;
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<tr><td colspan="5">Your cart is empty.</td></tr>';
+                document.getElementById('checkoutButton').style.display = 'none';
+            } else {
+                cart.forEach((item, index) => {
+                    const rowTotal = item.price * item.quantity;
+                    totalAmount += rowTotal;
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>Concert ${index + 1}</td>
+                        <td>$${item.price}</td>
+                        <td>${item.quantity}</td>
+                        <td>$${rowTotal.toFixed(2)}</td>
+                        <td><button onclick="removeFromCart(${index})">Remove</button></td>
+                    `;
+                    cartItems.appendChild(row);
+                });
+                document.getElementById('checkoutButton').style.display = 'block';
+            }
+
+            document.getElementById('total-amount').textContent = totalAmount.toFixed(2);
+        }
+
+        function addToCart(price, quantity) {
+            cart.push({ price: parseFloat(price), quantity: parseInt(quantity) });
+            localStorage.setItem('cart', JSON.stringify(cart)); // Save to localStorage
+            updateCartDisplay();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart)); // Save to localStorage
+            updateCartDisplay();
+        }
+        // Handle form submission
+        document.getElementById('ticketForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting
+
+            const price = document.getElementById('priceTypes').value;
+            const quantity = document.getElementById('numberOfTickets').value;
+
+            if (price && quantity) {
+                addToCart(price, quantity);
+            } else {
+                alert('Please select both price type and number of tickets.');
+            }
+        });
+
+        // Handle checkout button click
+        document.getElementById('checkoutButton').addEventListener('click', function() {
+            if (cart.length > 0) {
+                // Redirect to the Success.html file
+                window.location.href = 'payment.html';
+            }
+        });
+
+        // Initialize cart display
+        updateCartDisplay();
+    </script>
+</body>
+</html>
